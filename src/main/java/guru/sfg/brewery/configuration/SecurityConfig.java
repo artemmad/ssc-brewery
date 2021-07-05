@@ -22,6 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests(authorize -> {
                     authorize
+                            .antMatchers("/h2-console/**").permitAll() //do not use in production
                             .antMatchers("/","/login", "/webjars/**", "/resources/**").permitAll()
                             .antMatchers("/beers/**", "/beers*").permitAll()
                             .antMatchers(HttpMethod.GET, "/api/v1/beer/**").permitAll()
@@ -32,6 +33,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin().defaultSuccessUrl("/", true).and()
                 .httpBasic();
+
+        //h2 console config
+        http.headers().frameOptions().sameOrigin();
     }
 
     @Bean
